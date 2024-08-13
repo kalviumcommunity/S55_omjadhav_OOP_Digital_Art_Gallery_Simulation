@@ -10,21 +10,21 @@ public:
     int yearCreated;
 
     ArtPiece(string t, string a, string m, int y) {
-        title = t;
-        artist = a;
-        medium = m;
-        yearCreated = y;
+        this->title = t;
+        this->artist = a;
+        this->medium = m;
+        this->yearCreated = y;
     }
 
     void displayInfo() {
-        cout << "Title - " << title << endl;
-        cout << "Artist - " << artist << endl;
-        cout << "Medium - " << medium << endl;
-        cout << "Year Created - " << yearCreated << endl << endl;
+        cout << "Title - " << this->title << endl;
+        cout << "Artist - " << this->artist << endl;
+        cout << "Medium - " << this->medium << endl;
+        cout << "Year Created - " << this->yearCreated << endl << endl;
     }
 
     void updateYear(int newYear) {
-        yearCreated = newYear;
+        this->yearCreated = newYear;
     }
 };
 
@@ -35,21 +35,21 @@ public:
     vector<ArtPiece> artworks;
 
     Artist(string n, string s) {
-        name = n;
-        style = s;
+        this->name = n;
+        this->style = s;
     }
 
     void displayInfo() {
-        cout << "Artist Name - " << name << endl;
-        cout << "Artistic Style - " << style << endl;
+        cout << "Artist Name - " << this->name << endl;
+        cout << "Artistic Style - " << this->style << endl;
         cout << "Artworks:" << endl;
-        for (auto &art : artworks) {
+        for (auto &art : this->artworks) {
             art.displayInfo();
         }
     }
 
     void addArtPiece(ArtPiece art) {
-        artworks.push_back(art);
+        this->artworks.push_back(art);
     }
 };
 
