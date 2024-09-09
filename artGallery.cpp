@@ -34,7 +34,6 @@ class ArtPiece {
         }
 };
 
-
 int ArtPiece::totalArtPieces = 0;
 
 class Artist {
@@ -76,7 +75,6 @@ class Artist {
         }
 };
 
-
 int Artist::totalArtists = 0;
 
 int main() {
@@ -90,19 +88,15 @@ int main() {
 
     Artist* artists[2] = {artist1, artist2};
 
-
     for(int i = 0; i < 2; i++) {
         artists[i]->displayInfo();
     }
 
-
     artists[0]->updateArt(0, 2024);
     artists[0]->displayInfo();
 
-
     ArtPiece::displayTotalArtPieces();
     Artist::displayTotalArtists();
-
 
     delete artist1;
     delete artist2;
