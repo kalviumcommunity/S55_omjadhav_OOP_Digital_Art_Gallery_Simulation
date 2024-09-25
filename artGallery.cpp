@@ -4,22 +4,27 @@ using namespace std;
 
 class ArtPiece {
     private:
-        string title;          
-        int yearCreated;       
+        string title;
+        int yearCreated;
 
     public:
+        ArtPiece() {
+            title = "Unknown";
+            yearCreated = 0;
+        }
+
         ArtPiece(string t, int y) {
-            setTitle(t);        
-            setYearCreated(y);  
+            setTitle(t);
+            setYearCreated(y);
         }
 
         string getTitle() const { return title; }
         int getYearCreated() const { return yearCreated; }
 
         void setTitle(string t) { title = t; }
-        void setYearCreated(int y) { 
+        void setYearCreated(int y) {
             if (y > 0) {
-                yearCreated = y; 
+                yearCreated = y;
             } else {
                 cout << "Invalid Year!" << endl;
             }
@@ -28,21 +33,30 @@ class ArtPiece {
         void displayInfo() const {
             cout << "Title: " << getTitle() << ", Year Created: " << getYearCreated() << endl;
         }
+
+        ~ArtPiece() {
+            cout << "Destructor called for ArtPiece: " << title << endl;
+        }
 };
 
 class Artist {
     private:
-        string name;            
-        ArtPiece* artwork;      
+        string name;
+        ArtPiece* artwork;
 
     public:
+        Artist() {
+            name = "Unknown Artist";
+            artwork = nullptr;
+        }
+
         Artist(string n, ArtPiece* art) {
-            setName(n);          
-            artwork = art;       
+            setName(n);
+            artwork = art;
         }
 
         string getName() const { return name; }
-        void setName(string n) { 
+        void setName(string n) {
             if (!n.empty()) {
                 name = n;
             } else {
@@ -52,11 +66,20 @@ class Artist {
 
         void displayInfo() const {
             cout << "Artist: " << getName() << endl;
-            artwork->displayInfo();
+            if (artwork != nullptr) {
+                artwork->displayInfo();
+            }
         }
 
         void updateArtYear(int newYear) {
-            artwork->setYearCreated(newYear); 
+            if (artwork != nullptr) {
+                artwork->setYearCreated(newYear);
+            }
+        }
+
+        ~Artist() {
+            cout << "Destructor called for Artist: " << name << endl;
+            delete artwork;
         }
 };
 
@@ -70,7 +93,6 @@ int main() {
     artist1->displayInfo();
 
     delete artist1;
-    delete art1;
 
     return 0;
 }
