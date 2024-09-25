@@ -4,18 +4,26 @@ using namespace std;
 
 class ArtPiece {
     private:
-        string title;
-        int yearCreated;
-    
+        string title;          
+        int yearCreated;       
+
     public:
         ArtPiece(string t, int y) {
-            title = t;
-            yearCreated = y;
+            setTitle(t);        
+            setYearCreated(y);  
         }
 
         string getTitle() const { return title; }
         int getYearCreated() const { return yearCreated; }
-        void setYearCreated(int y) { yearCreated = y; }
+
+        void setTitle(string t) { title = t; }
+        void setYearCreated(int y) { 
+            if (y > 0) {
+                yearCreated = y; 
+            } else {
+                cout << "Invalid Year!" << endl;
+            }
+        }
 
         void displayInfo() const {
             cout << "Title: " << getTitle() << ", Year Created: " << getYearCreated() << endl;
@@ -24,22 +32,31 @@ class ArtPiece {
 
 class Artist {
     private:
-        string name;
-        ArtPiece* artwork;
-    
+        string name;            
+        ArtPiece* artwork;      
+
     public:
         Artist(string n, ArtPiece* art) {
-            name = n;
-            artwork = art;
+            setName(n);          
+            artwork = art;       
+        }
+
+        string getName() const { return name; }
+        void setName(string n) { 
+            if (!n.empty()) {
+                name = n;
+            } else {
+                cout << "Invalid Name!" << endl;
+            }
         }
 
         void displayInfo() const {
-            cout << "Artist: " << name << endl;
+            cout << "Artist: " << getName() << endl;
             artwork->displayInfo();
         }
 
         void updateArtYear(int newYear) {
-            artwork->setYearCreated(newYear);
+            artwork->setYearCreated(newYear); 
         }
 };
 
