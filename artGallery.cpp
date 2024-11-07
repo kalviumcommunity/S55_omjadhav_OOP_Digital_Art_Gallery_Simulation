@@ -43,8 +43,9 @@ public:
         cout << "Artist Name - " << this->name << endl;
         cout << "Artistic Style - " << this->style << endl;
         cout << "Artworks:" << endl;
-        for (auto &art : this->artworks) {
-            art.displayInfo();
+         for (int i = 0; i < artworks.size(); i++) {
+            artworks[i].displayInfo();
+            cout << endl;   
         }
     }
 
