@@ -52,7 +52,7 @@ class Painting : public ArtPiece {
             medium = m;
         }
 
-        void displayInfo() const   {
+        void displayInfo() const {
             ArtPiece::displayInfo();
             cout << "Medium: " << medium << endl;
         }
@@ -115,7 +115,7 @@ class ModernArtist : public Artist {
             style = s;
         }
 
-        void displayInfo() const   {
+        void displayInfo() const {
             Artist::displayInfo();
             cout << "Style: " << style << endl;
         }
