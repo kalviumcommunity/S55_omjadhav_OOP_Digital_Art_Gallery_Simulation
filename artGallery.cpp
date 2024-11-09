@@ -3,44 +3,47 @@
 using namespace std;
 
 class ArtPiece {
-    private:
-        string title;
-        int yearCreated;
-    
-    public:
-        ArtPiece(string t, int y) {
-            title = t;
-            yearCreated = y;
-        }
+private:
+    string title;
+    int yearCreated;
 
-        string getTitle() const { return title; }
-        int getYearCreated() const { return yearCreated; }
-        void setYearCreated(int y) { yearCreated = y; }
+public:
+    ArtPiece(const string& t, int y) : title(t), yearCreated(y) {}
 
-        void displayInfo() const {
-            cout << "Title: " << getTitle() << ", Year Created: " << getYearCreated() << endl;
-        }
+    string getTitle() const { return title; }
+    int getYearCreated() const { return yearCreated; }
+    void setYearCreated(int y) { yearCreated = y; }
+
+    void displayInfo() const {
+        cout << "Title: " << getTitle() << ", Year Created: " << getYearCreated() << endl;
+    }
 };
 
 class Artist {
-    private:
-        string name;
-        ArtPiece* artwork;
-    
-    public:
-        Artist(string n, ArtPiece* art) {
-            name = n;
-            artwork = art;
-        }
+private:
+    string name;
+    ArtPiece* artwork;
 
-        void displayInfo() const {
-            cout << "Artist: " << name << endl;
+public:
+    Artist(const string& n, ArtPiece* art) : name(n), artwork(art) {}
+    ~Artist() {
+        delete artwork;
+    }
+
+    void displayInfo() const {
+        cout << "Artist: " << name << endl;
+        if (artwork) {
             artwork->displayInfo();
+        } else {
+            cout << "No artwork available." << endl;
         }
+    }
 
-        void updateArtYear(int newYear) {
+    void updateArtYear(int newYear) {
+        if (artwork) {
             artwork->setYearCreated(newYear);
         }
+    }
 };
 
 int main() {
@@ -53,7 +56,6 @@ int main() {
     artist1->displayInfo();
 
     delete artist1;
-    delete art1;
 
     return 0;
 }
