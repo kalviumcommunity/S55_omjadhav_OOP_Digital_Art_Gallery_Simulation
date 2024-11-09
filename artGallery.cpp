@@ -30,12 +30,35 @@ class ArtPiece {
             }
         }
 
-        void displayInfo() const {
+        virtual void displayInfo() const {
             cout << "Title: " << getTitle() << ", Year Created: " << getYearCreated() << endl;
         }
 
-        ~ArtPiece() {
+        virtual ~ArtPiece() {
             cout << "Destructor called for ArtPiece: " << title << endl;
+        }
+};
+
+class Painting : public ArtPiece {
+    private:
+        string medium;
+
+    public:
+        Painting() : ArtPiece() {
+            medium = "Unknown Medium";
+        }
+
+        Painting(string t, int y, string m) : ArtPiece(t, y) {
+            medium = m;
+        }
+
+        void displayInfo() const  {
+            ArtPiece::displayInfo();
+            cout << "Medium: " << medium << endl;
+        }
+
+        ~Painting() {
+            cout << "Destructor called for Painting" << endl;
         }
 };
 
@@ -83,12 +106,26 @@ class Artist {
         }
 };
 
+class ModernArtist : public Artist {
+    private:
+        string style;
+
+    public:
+        ModernArtist(string n, ArtPiece* art, string s) : Artist(n, art) {
+            style = s;
+        }
+
+        void displayInfo() const {
+            Artist::displayInfo();
+            cout << "Style: " << style << endl;
+        }
+};
+
 int main() {
-    ArtPiece* art1 = new ArtPiece("Starry Night", 1889);
-    Artist* artist1 = new Artist("Vincent van Gogh", art1);
+    Painting* painting = new Painting("Starry Night", 1889, "Oil on Canvas");
+    ModernArtist* artist1 = new ModernArtist("Vincent van Gogh", painting, "Post-Impressionism");
 
     artist1->displayInfo();
-
     artist1->updateArtYear(2024);
     artist1->displayInfo();
 
