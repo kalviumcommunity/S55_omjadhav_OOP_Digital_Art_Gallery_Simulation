@@ -8,29 +8,22 @@ private:
     int yearCreated;
 
 public:
-    ArtPiece() : title("Unknown"), yearCreated(0) {}
-
-    ArtPiece(const string &t, int y) : title(t), yearCreated(y > 0 ? y : 0) {}
+    ArtPiece(const string &t = "Unknown", int y = 0) : title(t), yearCreated(y > 0 ? y : 0) {}
 
     string getTitle() const { return title; }
     int getYearCreated() const { return yearCreated; }
 
     void setTitle(const string &t) { title = t; }
     void setYearCreated(int y) {
-        if (y > 0) {
-            yearCreated = y;
-        } else {
-            cout << "Invalid Year!" << endl;
-        }
+        if (y > 0) yearCreated = y;
+        else cout << "Invalid Year!" << endl;
     }
 
     virtual void displayInfo() const {
         cout << "Title: " << title << ", Year Created: " << yearCreated << endl;
     }
 
-    virtual ~ArtPiece() {
-        cout << "Destructor called for ArtPiece: " << title << endl;
-    }
+    virtual ~ArtPiece() = default;
 };
 
 class Painting : public ArtPiece {
@@ -38,20 +31,15 @@ private:
     string medium;
 
 public:
-    Painting() : ArtPiece(), medium("Unknown Medium") {}
-
-    Painting(const string &t, int y, const string &m) : ArtPiece(t, y), medium(m) {}
+    Painting(const string &t = "Unknown", int y = 0, const string &m = "Unknown Medium")
+        : ArtPiece(t, y), medium(m) {}
 
     string getMedium() const { return medium; }
     void setMedium(const string &m) { medium = m; }
 
-    void displayInfo() const   {
+    void displayInfo() const override {
         ArtPiece::displayInfo();
         cout << "Medium: " << medium << endl;
-    }
-
-    ~Painting() {
-        cout << "Destructor called for Painting" << endl;
     }
 };
 
@@ -60,26 +48,19 @@ private:
     string name;
 
 public:
-    Artist() : name("Unknown Artist") {}
-
-    explicit Artist(const string &n) : name(n) {}
+    Artist(const string &n = "Unknown Artist") : name(n) {}
 
     string getName() const { return name; }
     void setName(const string &n) {
-        if (!n.empty()) {
-            name = n;
-        } else {
-            cout << "Invalid Name!" << endl;
-        }
+        if (!n.empty()) name = n;
+        else cout << "Invalid Name!" << endl;
     }
 
     virtual void displayInfo() const {
         cout << "Artist: " << name << endl;
     }
 
-    virtual ~Artist() {
-        cout << "Destructor called for Artist: " << name << endl;
-    }
+    virtual ~Artist() = default;
 };
 
 class ModernArtist : public Artist {
@@ -92,23 +73,19 @@ public:
     string getStyle() const { return style; }
     void setStyle(const string &s) { style = s; }
 
-    void displayInfo() const   {
+    void displayInfo() const override {
         Artist::displayInfo();
         cout << "Style: " << style << endl;
-    }
-
-    ~ModernArtist() {
-        cout << "Destructor called for ModernArtist" << endl;
     }
 };
 
 class Exhibition {
 private:
-    Artist* artist;
-    ArtPiece* artwork;
+    Artist *artist;
+    ArtPiece *artwork;
 
 public:
-    Exhibition(Artist* a, ArtPiece* art) : artist(a), artwork(art) {}
+    Exhibition(Artist *a, ArtPiece *art) : artist(a), artwork(art) {}
 
     void displayExhibit() const {
         if (artist) artist->displayInfo();
@@ -126,16 +103,19 @@ public:
 };
 
 int main() {
-    Painting* painting = new Painting("Starry Night", 1889, "Oil on Canvas");
-    ModernArtist* artist1 = new ModernArtist("Vincent van Gogh", "Post-Impressionism");
+    Painting *painting = new Painting("Starry Night", 1889, "Oil on Canvas");
+    ModernArtist *artist = new ModernArtist("Vincent van Gogh", "Post-Impressionism");
 
-    Exhibition* exhibit = new Exhibition(artist1, painting);
+    Exhibition *exhibit = new Exhibition(artist, painting);
 
+    cout << "Initial Exhibit Details:\n";
     exhibit->displayExhibit();
+
     exhibit->updateArtYear(2024);
+
+    cout << "\nUpdated Exhibit Details:\n";
     exhibit->displayExhibit();
 
     delete exhibit;
-
     return 0;
 }
