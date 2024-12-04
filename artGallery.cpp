@@ -3,79 +3,49 @@
 using namespace std;
 
 class ArtPiece {
-private:
-    string title;
-    int yearCreated;
-
 public:
-    ArtPiece(const string &t = "Unknown", int y = 0) : title(t), yearCreated(y > 0 ? y : 0) {}
+    virtual void displayInfo() const = 0;
+    virtual void setYearCreated(int year) = 0;
 
-    string getTitle() const { return title; }
-    int getYearCreated() const { return yearCreated; }
-
-    void setTitle(const string &t) { title = t; }
-    void setYearCreated(int y) {
-        if (y > 0) yearCreated = y;
-        else cout << "Invalid Year!" << endl;
-    }
-
-    virtual void displayInfo() const {
-        cout << "Title: " << title << ", Year Created: " << yearCreated << endl;
-    }
-
-    virtual ~ArtPiece() = default;
 };
 
 class Painting : public ArtPiece {
 private:
+    string title;
+    int yearCreated;
     string medium;
 
 public:
     Painting(const string &t = "Unknown", int y = 0, const string &m = "Unknown Medium")
-        : ArtPiece(t, y), medium(m) {}
+        : title(t), yearCreated(y > 0 ? y : 0), medium(m) {}
 
-    string getMedium() const { return medium; }
-    void setMedium(const string &m) { medium = m; }
+    void setYearCreated(int year)   {
+        if (year > 0) yearCreated = year;
+        else cout << "Invalid Year!" << endl;
+    }
 
-    void displayInfo() const override {
-        ArtPiece::displayInfo();
-        cout << "Medium: " << medium << endl;
+    void displayInfo() const   {
+        cout << "Title: " << title << ", Year Created: " << yearCreated << ", Medium: " << medium << endl;
     }
 };
 
 class Artist {
-private:
-    string name;
-
 public:
-    Artist(const string &n = "Unknown Artist") : name(n) {}
+    virtual void displayInfo() const = 0;
 
-    string getName() const { return name; }
-    void setName(const string &n) {
-        if (!n.empty()) name = n;
-        else cout << "Invalid Name!" << endl;
-    }
-
-    virtual void displayInfo() const {
-        cout << "Artist: " << name << endl;
-    }
-
-    virtual ~Artist() = default;
 };
 
 class ModernArtist : public Artist {
 private:
+    string name;
     string style;
 
 public:
-    ModernArtist(const string &n, const string &s) : Artist(n), style(s) {}
+    ModernArtist(const string &n = "Unknown Artist", const string &s = "Unknown Style")
+        : name(n), style(s) {}
 
-    string getStyle() const { return style; }
-    void setStyle(const string &s) { style = s; }
-
-    void displayInfo() const override {
-        Artist::displayInfo();
-        cout << "Style: " << style << endl;
+    void displayInfo() const   {
+        cout << "Artist: " << name << ", Style: " << style << endl;
     }
 };
 
@@ -96,10 +66,7 @@ public:
         if (artwork) artwork->setYearCreated(newYear);
     }
 
-    ~Exhibition() {
-        delete artist;
-        delete artwork;
-    }
+  
 };
 
 int main() {
