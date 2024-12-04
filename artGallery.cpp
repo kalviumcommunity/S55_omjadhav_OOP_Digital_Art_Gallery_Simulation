@@ -3,133 +3,139 @@
 using namespace std;
 
 class ArtPiece {
-    private:
-        string title;
-        int yearCreated;
+private:
+    string title;
+    int yearCreated;
 
-    public:
-        ArtPiece() {
-            title = "Unknown";
-            yearCreated = 0;
+public:
+    ArtPiece() : title("Unknown"), yearCreated(0) {}
+
+    ArtPiece(const string &t, int y) : title(t), yearCreated(y > 0 ? y : 0) {}
+
+    string getTitle() const { return title; }
+    int getYearCreated() const { return yearCreated; }
+
+    void setTitle(const string &t) { title = t; }
+    void setYearCreated(int y) {
+        if (y > 0) {
+            yearCreated = y;
+        } else {
+            cout << "Invalid Year!" << endl;
         }
+    }
 
-        ArtPiece(string t, int y) {
-            setTitle(t);
-            setYearCreated(y);
-        }
+    virtual void displayInfo() const {
+        cout << "Title: " << title << ", Year Created: " << yearCreated << endl;
+    }
 
-        string getTitle() const { return title; }
-        int getYearCreated() const { return yearCreated; }
-
-        void setTitle(string t) { title = t; }
-        void setYearCreated(int y) {
-            if (y > 0) {
-                yearCreated = y;
-            } else {
-                cout << "Invalid Year!" << endl;
-            }
-        }
-
-        virtual void displayInfo() const {
-            cout << "Title: " << getTitle() << ", Year Created: " << getYearCreated() << endl;
-        }
-
-        virtual ~ArtPiece() {
-            cout << "Destructor called for ArtPiece: " << title << endl;
-        }
+    virtual ~ArtPiece() {
+        cout << "Destructor called for ArtPiece: " << title << endl;
+    }
 };
 
 class Painting : public ArtPiece {
-    private:
-        string medium;
+private:
+    string medium;
 
-    public:
-        Painting() : ArtPiece() {
-            medium = "Unknown Medium";
-        }
+public:
+    Painting() : ArtPiece(), medium("Unknown Medium") {}
 
-        Painting(string t, int y, string m) : ArtPiece(t, y) {
-            medium = m;
-        }
+    Painting(const string &t, int y, const string &m) : ArtPiece(t, y), medium(m) {}
 
-        void displayInfo() const {
-            ArtPiece::displayInfo();
-            cout << "Medium: " << medium << endl;
-        }
+    string getMedium() const { return medium; }
+    void setMedium(const string &m) { medium = m; }
 
-        ~Painting() {
-            cout << "Destructor called for Painting" << endl;
-        }
+    void displayInfo() const   {
+        ArtPiece::displayInfo();
+        cout << "Medium: " << medium << endl;
+    }
+
+    ~Painting() {
+        cout << "Destructor called for Painting" << endl;
+    }
 };
 
 class Artist {
-    private:
-        string name;
-        ArtPiece* artwork;
+private:
+    string name;
 
-    public:
-        Artist() {
-            name = "Unknown Artist";
-            artwork = nullptr;
-        }
+public:
+    Artist() : name("Unknown Artist") {}
 
-        Artist(string n, ArtPiece* art) {
-            setName(n);
-            artwork = art;
-        }
+    explicit Artist(const string &n) : name(n) {}
 
-        string getName() const { return name; }
-        void setName(string n) {
-            if (!n.empty()) {
-                name = n;
-            } else {
-                cout << "Invalid Name!" << endl;
-            }
+    string getName() const { return name; }
+    void setName(const string &n) {
+        if (!n.empty()) {
+            name = n;
+        } else {
+            cout << "Invalid Name!" << endl;
         }
+    }
 
-        void displayInfo() const {
-            cout << "Artist: " << getName() << endl;
-            if (artwork != nullptr) {
-                artwork->displayInfo();
-            }
-        }
+    virtual void displayInfo() const {
+        cout << "Artist: " << name << endl;
+    }
 
-        void updateArtYear(int newYear) {
-            if (artwork != nullptr) {
-                artwork->setYearCreated(newYear);
-            }
-        }
-
-        ~Artist() {
-            cout << "Destructor called for Artist: " << name << endl;
-            delete artwork;
-        }
+    virtual ~Artist() {
+        cout << "Destructor called for Artist: " << name << endl;
+    }
 };
 
 class ModernArtist : public Artist {
-    private:
-        string style;
+private:
+    string style;
 
-    public:
-        ModernArtist(string n, ArtPiece* art, string s) : Artist(n, art) {
-            style = s;
-        }
+public:
+    ModernArtist(const string &n, const string &s) : Artist(n), style(s) {}
 
-        void displayInfo() const {
-            Artist::displayInfo();
-            cout << "Style: " << style << endl;
-        }
+    string getStyle() const { return style; }
+    void setStyle(const string &s) { style = s; }
+
+    void displayInfo() const   {
+        Artist::displayInfo();
+        cout << "Style: " << style << endl;
+    }
+
+    ~ModernArtist() {
+        cout << "Destructor called for ModernArtist" << endl;
+    }
+};
+
+class Exhibition {
+private:
+    Artist* artist;
+    ArtPiece* artwork;
+
+public:
+    Exhibition(Artist* a, ArtPiece* art) : artist(a), artwork(art) {}
+
+    void displayExhibit() const {
+        if (artist) artist->displayInfo();
+        if (artwork) artwork->displayInfo();
+    }
+
+    void updateArtYear(int newYear) {
+        if (artwork) artwork->setYearCreated(newYear);
+    }
+
+    ~Exhibition() {
+        delete artist;
+        delete artwork;
+    }
 };
 
 int main() {
     Painting* painting = new Painting("Starry Night", 1889, "Oil on Canvas");
-    ModernArtist* artist1 = new ModernArtist("Vincent van Gogh", painting, "Post-Impressionism");
+    ModernArtist* artist1 = new ModernArtist("Vincent van Gogh", "Post-Impressionism");
 
-    artist1->displayInfo();
-    artist1->updateArtYear(2024);
-    artist1->displayInfo();
+    Exhibition* exhibit = new Exhibition(artist1, painting);
 
-    delete artist1;
+    exhibit->displayExhibit();
+    exhibit->updateArtYear(2024);
+    exhibit->displayExhibit();
+
+    delete exhibit;
 
     return 0;
 }
